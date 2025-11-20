@@ -12,10 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.data.model.InterestCycle
 import com.byajpay.app.data.model.TransactionType
+import com.byajpay.app.ui.components.AppTopBar
 import com.byajpay.app.ui.viewmodel.AddTransactionViewModel
 import java.util.Calendar
 
@@ -44,13 +46,9 @@ fun AddTransactionScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Add Transaction") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
+            AppTopBar(
+                title = "Add Transaction",
+                navController = navController
             )
         }
     ) { padding ->
@@ -58,15 +56,16 @@ fun AddTransactionScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // Amount
             OutlinedTextField(
                 value = amount,
                 onValueChange = { amount = it },
                 label = { Text("Amount *") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                     keyboardType = KeyboardType.Decimal
@@ -100,6 +99,7 @@ fun AddTransactionScreen(
                 value = notes,
                 onValueChange = { notes = it },
                 label = { Text("Notes (Optional)") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -125,6 +125,7 @@ fun AddTransactionScreen(
                         value = interestRate,
                         onValueChange = { interestRate = it },
                         label = { Text("Interest Rate (%) *") },
+                        shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                             keyboardType = KeyboardType.Decimal
@@ -170,7 +171,10 @@ fun AddTransactionScreen(
                         )
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
                 enabled = amount.toDoubleOrNull() != null &&
                         selectedType != null &&
                         (!chargeInterest || (interestRate.toDoubleOrNull() != null && selectedCycle != null)) &&

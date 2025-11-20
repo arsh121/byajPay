@@ -11,9 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.data.model.Customer
+import androidx.compose.ui.draw.clip
+import com.byajpay.app.ui.components.AppTopBar
 import com.byajpay.app.ui.viewmodel.CustomerListViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -45,7 +48,10 @@ fun CustomerListScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Customers") })
+            AppTopBar(
+                title = "Customers",
+                navController = navController
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -65,16 +71,17 @@ fun CustomerListScreen(
                 onValueChange = { searchQuery = it },
                 label = { Text("Search customers") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
                 singleLine = true
             )
             
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(customersList) { customer ->
                     CustomerItem(
@@ -99,31 +106,35 @@ fun CustomerItem(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = onClick
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = customer.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
                 if (customer.phone != null) {
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = customer.phone,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
             Text(
                 text = "₹${NumberFormat.getNumberInstance(Locale.US).format(outstandingBalance)}",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )

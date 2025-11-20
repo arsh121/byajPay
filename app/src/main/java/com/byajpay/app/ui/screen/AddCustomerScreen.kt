@@ -7,8 +7,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.byajpay.app.ui.components.AppTopBar
 import com.byajpay.app.ui.viewmodel.AddCustomerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,13 +33,9 @@ fun AddCustomerScreen(
     
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Add Customer") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
+            AppTopBar(
+                title = "Add Customer",
+                navController = navController
             )
         }
     ) { padding ->
@@ -45,13 +43,14 @@ fun AddCustomerScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Name *") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -60,6 +59,7 @@ fun AddCustomerScreen(
                 value = phone,
                 onValueChange = { if (it.length <= 10) phone = it },
                 label = { Text("Phone (Optional)") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -68,6 +68,7 @@ fun AddCustomerScreen(
                 value = notes,
                 onValueChange = { notes = it },
                 label = { Text("Notes (Optional)") },
+                shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -80,7 +81,10 @@ fun AddCustomerScreen(
                 onClick = {
                     viewModel.addCustomer(name, phone.takeIf { it.isNotBlank() }, notes.takeIf { it.isNotBlank() })
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
                 enabled = name.isNotBlank() && uiState !is com.byajpay.app.ui.viewmodel.CustomerUiState.Loading
             ) {
                 if (uiState is com.byajpay.app.ui.viewmodel.CustomerUiState.Loading) {

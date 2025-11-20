@@ -3,6 +3,7 @@ package com.byajpay.app.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.byajpay.app.data.model.User
+import com.byajpay.app.data.preferences.PreferencesManager
 import com.byajpay.app.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val preferencesManager: PreferencesManager
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Initial)
@@ -48,6 +50,7 @@ class AuthViewModel @Inject constructor(
                             businessName = businessName
                         )
                         userRepository.insertUser(newUser)
+                        preferencesManager.setLoggedIn(phoneNumber)
                         _uiState.value = AuthUiState.Success(newUser)
                     } else {
                         // Update user if name/business name provided
@@ -57,8 +60,10 @@ class AuthViewModel @Inject constructor(
                                 businessName = businessName ?: user.businessName
                             )
                             userRepository.updateUser(updatedUser)
+                            preferencesManager.setLoggedIn(phoneNumber)
                             _uiState.value = AuthUiState.Success(updatedUser)
                         } else {
+                            preferencesManager.setLoggedIn(phoneNumber)
                             _uiState.value = AuthUiState.Success(user)
                         }
                     }

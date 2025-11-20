@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.byajpay.app.data.dao.*
 import com.byajpay.app.data.database.AppDatabase
+import com.byajpay.app.data.preferences.PreferencesManager
 import com.byajpay.app.data.repository.*
 import dagger.Module
 import dagger.Provides
@@ -61,5 +62,10 @@ object AppModule {
         interestRuleDao: InterestRuleDao,
         transactionDao: TransactionDao
     ): InterestRepository = InterestRepository(interestRuleDao, transactionDao)
+    
+    @Provides
+    @Singleton
+    fun providePreferencesManager(@ApplicationContext context: Context): PreferencesManager =
+        PreferencesManager(context)
 }
 
