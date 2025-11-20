@@ -1,0 +1,356 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2865
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 PRODUCT REQUIREMENTS DOCUMENT (PRD) \'96 MVP v1.1\
+Product Name: ByajLite (Placeholder)\
+Owner: Arsh\
+Version: 1.1 (MVP)\
+Last Updated: 20 Nov 2025\
+\
+\
+====================================================\
+1. PURPOSE\
+====================================================\
+ByajLite helps small lenders and shopkeepers maintain a simple digital ledger\
+for money lent (credit) and collected (debit). It replaces paper udhar books \
+with a fast, offline-first, reliable mobile app.\
+\
+The MVP focuses on:\
+- Simple ledger entries\
+- Optional interest per credit entry\
+- Accurate outstanding balances\
+- Automatic interest accrual\
+- Data backup & sync\
+- Zero learning curve\
+\
+\
+====================================================\
+2. TARGET USERS\
+====================================================\
+- Small shopkeepers\
+- Micro-lenders\
+- Local service providers\
+- Rural and semi-urban lenders\
+- Users switching from paper udhar books\
+\
+Characteristics:\
+- Low digital familiarity\
+- Use low-end Android devices\
+- Frequently offline\
+- Need extremely simple workflows\
+\
+\
+====================================================\
+3. USER PROBLEMS\
+====================================================\
+1. Paper registers are error-prone.\
+2. Manual calculations cause disputes.\
+3. Hard to track outstanding balances.\
+4. No backup \uc0\u8594  fear of losing data.\
+5. Interest calculation is time-consuming.\
+\
+\
+====================================================\
+4. MVP GOALS\
+====================================================\
+- Replace paper udhar registers.\
+- Allow easy credit/debit entries.\
+- Auto-calculate interest periodically.\
+- Display accurate outstanding amounts.\
+- Provide safe cloud backup.\
+- Ensure offline-first usability.\
+\
+\
+====================================================\
+5. OUT OF SCOPE (FOR MVP)\
+====================================================\
+- EMI schedules\
+- Automated WhatsApp/SMS reminders\
+- Payment gateway\
+- Field agent / staff workflows\
+- Multi-user / roles\
+- PDF receipts or exports\
+- Complex analytics\
+- KYC or onboarding flows\
+- Compounding interest\
+- EMI or amortization tables\
+\
+\
+====================================================\
+6. CORE MVP FEATURES\
+====================================================\
+\
+----------------------------------------------------\
+6.1 LOGIN / SIGNUP (OTP)\
+----------------------------------------------------\
+GOAL: Simple onboarding using phone number only.\
+\
+Requirements:\
+- User enters phone number.\
+- OTP sent via SMS.\
+- Auto-read OTP (Android) if permission granted.\
+- After success \uc0\u8594  go to Home Dashboard.\
+- Store user name + business name (optional).\
+\
+Success Criteria:\
+- OTP verification median < 10 seconds.\
+- 85%+ login completion.\
+\
+\
+----------------------------------------------------\
+6.2 HOME DASHBOARD\
+----------------------------------------------------\
+Components:\
+- Total Outstanding (sum of all customer balances).\
+- Quick Actions:\
+  - Add Customer\
+  - Add Entry (Add Transaction)\
+- Optional: last 3 recent transactions.\
+\
+Requirements:\
+- Show outstanding from local DB.\
+- Update instantly on any transaction.\
+\
+\
+----------------------------------------------------\
+6.3 CUSTOMER LIST\
+----------------------------------------------------\
+Components:\
+- Customer name\
+- Phone (optional)\
+- Outstanding balance\
+- Tap \uc0\u8594  Customer Detail / Ledger\
+\
+Requirements:\
+- Search by name/phone\
+- Sort by: most recently updated (default)\
+- No filters in MVP\
+\
+\
+----------------------------------------------------\
+6.4 ADD CUSTOMER\
+----------------------------------------------------\
+Fields:\
+- Name (required)\
+- Phone (optional)\
+- Notes (optional)\
+\
+Requirements:\
+- Basic validation\
+- Store locally & sync when online\
+\
+\
+----------------------------------------------------\
+6.5 CUSTOMER DETAIL / LEDGER VIEW\
+----------------------------------------------------\
+GOAL: Show all transactions for the customer.\
+\
+Components:\
+- Customer name + phone\
+- Outstanding balance\
+- Ledger entries (latest first)\
+\
+Entry types:\
+- Credit (money given)\
+- Debit (money received)\
+- System-generated Interest entry\
+\
+User Actions:\
+- Add Transaction\
+- Edit entry (within 24 hours)\
+- Delete entry\
+\
+\
+----------------------------------------------------\
+6.6 ADD TRANSACTION (CREDIT / DEBIT)\
+----------------------------------------------------\
+Fields:\
+- Amount (required)\
+- Type: Credit / Debit\
+- Date (default: today)\
+- Notes (optional)\
+\
+Business Logic:\
+- Credit = increases outstanding\
+- Debit = reduces outstanding\
+- New balance = previous \'b1 amount\
+\
+UX:\
+- Fast 1\'962 tap flow\
+- Confirmation toast after entry\
+\
+\
+----------------------------------------------------\
+6.7 INTEREST LOGIC (INTEGRATED INTO LEDGER)\
+----------------------------------------------------\
+GOAL:\
+Allow user to add simple interest to a credit entry.\
+Interest should auto-accrue based on cycle (daily/weekly/monthly/yearly).\
+\
+Trigger:\
+Interest options appear ONLY if entry type = Credit.\
+\
+Fields:\
+[ ] Charge Interest\
+    Interest Rate (%)   [e.g., 5]\
+    Interest Cycle      (Daily / Weekly / Monthly / Yearly)\
+    Start Date          (default today)\
+\
+Calculation:\
+Simple Interest Only:\
+Interest = Principal \'d7 Rate \'d7 Time\
+\
+Where Time depends on cycle:\
+- Daily   \uc0\u8594  number of days\
+- Weekly  \uc0\u8594  number of weeks\
+- Monthly \uc0\u8594  number of months\
+- Yearly  \uc0\u8594  number of years\
+\
+Accrual Rules:\
+- Interest is added once per cycle.\
+- System auto-generates ledger entries:\
+  Type: \'93Interest Added\'94\
+  Amount: \uc0\u8377 X\
+  Timestamp: auto-generated\
+\
+These entries update outstanding balance.\
+\
+Display:\
+- In confirmation: interest amount + next interest date\
+- In ledger: interest entries shown with timestamps\
+\
+Constraints:\
+- No compound interest\
+- No EMI schedule\
+- Interest cannot be edited later (but entry can be deleted)\
+- Works offline; interest added when app opens if cycles elapsed\
+\
+\
+----------------------------------------------------\
+6.8 PROFILE & SETTINGS\
+----------------------------------------------------\
+Fields:\
+- User name\
+- Business name\
+- Logout\
+\
+Future (not MVP):\
+- Language selection\
+- Theme options\
+\
+\
+----------------------------------------------------\
+6.9 DATA BACKUP / SYNC SETTINGS\
+----------------------------------------------------\
+GOAL:\
+Ensure data safety and continuity across phones.\
+\
+Requirements:\
+- Auto-sync ledger + customers when online\
+- Manual "Sync Now" button\
+- Show:\
+  \'93Last synced at <timestamp>\'94\
+\
+Sync Logic:\
+- Timestamp-based conflict resolution (latest wins)\
+- Batches of customers + ledger entries\
+\
+Data Stored on Cloud:\
+- Users\
+- Customers\
+- Transactions\
+- Interest rules\
+- Settings\
+\
+\
+====================================================\
+7. NON-FUNCTIONAL REQUIREMENTS\
+====================================================\
+\
+Performance:\
+- Add transaction < 1 sec\
+- Ledger load < 1 sec\
+\
+Offline-First:\
+- All features work offline\
+- Sync queued for later\
+\
+Error Handling:\
+- OTP retry if failed\
+- Sync retry on failure with exponential backoff\
+\
+Security:\
+- Local DB encryption (SQLCipher)\
+- HTTPS for all API calls\
+- Token-based auth\
+\
+App Size:\
+- Target < 25 MB APK\
+\
+\
+====================================================\
+8. TECH ARCHITECTURE OVERVIEW\
+====================================================\
+\
+Mobile App:\
+- React Native or Flutter\
+- Local DB: SQLite\
+\
+Backend Services:\
+1. Auth (OTP)\
+2. User + Customer + Ledger CRUD\
+3. Sync Service (offline reconciliation)\
+\
+Database:\
+- Firestore OR Postgres + Node backend\
+\
+Cloud Storage:\
+- Customer/ledger snapshots\
+\
+\
+====================================================\
+9. SUCCESS METRICS (MVP)\
+====================================================\
+- Daily Transactions per User\
+- % of users with >5 customers added\
+- Sync success rate > 95%\
+- Crash-free rate > 99%\
+- 30-day retention > 30%\
+- Zero data-loss complaints\
+\
+\
+====================================================\
+10. LAUNCH CHECKLIST\
+====================================================\
+- OTP flow fully functional\
+- Offline mode tested\
+- Interest accrual tested across cycles\
+- Sync tested across two devices\
+- Crash-free > 99%\
+- Hindi UX verified\
+- Play Store listing ready\
+\
+\
+====================================================\
+11. FUTURE ENHANCEMENTS\
+====================================================\
+- Automated WhatsApp reminders\
+- Compound interest\
+- EMI/repayment schedules\
+- PDF receipts\
+- Multiple devices\
+- Payment collection links\
+- Field agent module\
+- Analytics dashboard\
+- Customer credit scoring\
+- Custom reminder rules\
+- Voice note-based entries\
+\
+====================================================\
+END OF DOCUMENT\
+====================================================\
+}
