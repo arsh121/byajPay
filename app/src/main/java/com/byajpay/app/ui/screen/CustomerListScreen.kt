@@ -12,12 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.data.model.Customer
 import androidx.compose.ui.draw.clip
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.CustomerListViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -73,6 +75,10 @@ fun CustomerListScreen(
                 label = { Text("Search customers") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 12.dp),
@@ -108,7 +114,10 @@ fun CustomerItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = LightGrey
+        ),
         onClick = onClick
     ) {
         Row(
@@ -122,14 +131,16 @@ fun CustomerItem(
                 Text(
                     text = customer.name,
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = DarkText
                 )
                 if (customer.phone != null) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = customer.phone,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = GreyText,
+                        fontSize = 13.sp
                     )
                 }
             }
@@ -137,7 +148,7 @@ fun CustomerItem(
                 text = "₹${NumberFormat.getNumberInstance(Locale.US).format(outstandingBalance)}",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = BrandPrimary
             )
         }
     }

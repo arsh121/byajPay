@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.data.model.TransactionType
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.CustomerWithRecentTransactions
 import com.byajpay.app.ui.viewmodel.HomeViewModel
 import java.text.NumberFormat
@@ -72,7 +74,9 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate("add_customer") },
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                containerColor = BrandPrimary,
+                contentColor = Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Customer")
             }
@@ -83,41 +87,41 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Total Outstanding Card with gradient-like effect
+            // Total Outstanding Card
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
-                shape = RoundedCornerShape(24.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = BrandSecondary
                 )
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(32.dp),
+                        .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "Total Outstanding",
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = BrandPrimary
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "₹${NumberFormat.getNumberInstance(Locale.US).format(totalOutstanding)}",
                         style = MaterialTheme.typography.displayMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = DarkText
                     )
                 }
             }
             
             Spacer(modifier = Modifier.height(8.dp))
             
-            // Quick Actions with better styling
+            // Quick Actions - Bigger buttons
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,9 +131,12 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier
                         .weight(1f)
-                        .height(140.dp),
+                        .height(160.dp),
                     shape = RoundedCornerShape(20.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
                     onClick = { navController.navigate("customer_list") }
                 ) {
                     Column(
@@ -142,14 +149,15 @@ fun HomeScreen(
                         Icon(
                             Icons.Default.People,
                             contentDescription = null,
-                            modifier = Modifier.size(56.dp),
-                            tint = MaterialTheme.colorScheme.primary
+                            modifier = Modifier.size(64.dp),
+                            tint = BrandPrimary
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "Customers",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = DarkText
                         )
                     }
                 }
@@ -157,9 +165,12 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier
                         .weight(1f)
-                        .height(140.dp),
+                        .height(160.dp),
                     shape = RoundedCornerShape(20.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    ),
                     onClick = { navController.navigate("customer_list") }
                 ) {
                     Column(
@@ -172,14 +183,15 @@ fun HomeScreen(
                         Icon(
                             Icons.Default.Add,
                             contentDescription = null,
-                            modifier = Modifier.size(56.dp),
-                            tint = MaterialTheme.colorScheme.secondary
+                            modifier = Modifier.size(64.dp),
+                            tint = BrandPrimary
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "Add Entry",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = DarkText
                         )
                     }
                 }
@@ -202,13 +214,13 @@ fun HomeScreen(
                         .padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        containerColor = LightGrey
                     )
                 ) {
                     Text(
                         text = "No transactions yet",
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = GreyText,
                         modifier = Modifier.padding(24.dp)
                     )
                 }
@@ -249,13 +261,16 @@ fun CustomerTransactionCard(
     
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = LightGrey
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             // Collapsed view - Customer name, last transaction, total due
             Row(
@@ -266,12 +281,22 @@ fun CustomerTransactionCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    // Customer Name
+                    // Customer Name - Bold for scannability
                     Text(
                         text = customer.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = DarkText
                     )
+                    if (customer.phone != null) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = customer.phone,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = GreyText,
+                            fontSize = 13.sp
+                        )
+                    }
                     
                     Spacer(modifier = Modifier.height(6.dp))
                     
@@ -292,37 +317,37 @@ fun CustomerTransactionCard(
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = if (lastTransaction.type == TransactionType.CREDIT) {
-                                    MaterialTheme.colorScheme.error
+                                    Color.White
                                 } else {
-                                    MaterialTheme.colorScheme.primary
+                                    Color.White
                                 },
                                 modifier = Modifier
-                                    .padding(horizontal = 4.dp, vertical = 1.dp)
-                                    .clip(RoundedCornerShape(3.dp))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                                    .clip(RoundedCornerShape(4.dp))
                                     .background(
                                         if (lastTransaction.type == TransactionType.CREDIT) {
-                                            MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                                            WarningRed
                                         } else {
-                                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                                            SuccessGreen
                                         }
                                     )
                             )
                             Text(
                                 text = dateFormat.format(Date(lastTransaction.date)),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontSize = 11.sp
+                                color = GreyText,
+                                fontSize = 12.sp
                             )
                             Text(
                                 text = "${if (lastTransaction.type == TransactionType.CREDIT) "+" else "-"}₹${NumberFormat.getNumberInstance(Locale.US).format(lastTransaction.amount)}",
-                                style = MaterialTheme.typography.bodySmall,
-                                fontWeight = FontWeight.Medium,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
                                 color = if (lastTransaction.type == TransactionType.CREDIT) {
-                                    MaterialTheme.colorScheme.error
+                                    WarningRed
                                 } else {
-                                    MaterialTheme.colorScheme.primary
+                                    SuccessGreen
                                 },
-                                fontSize = 11.sp
+                                fontSize = 13.sp
                             )
                         }
                     }
@@ -331,24 +356,24 @@ fun CustomerTransactionCard(
                 Column(
                     horizontalAlignment = Alignment.End
                 ) {
-                    // Total Due
+                    // Total Due - Blue or Black (not red/green)
                     Text(
                         text = "₹${NumberFormat.getNumberInstance(Locale.US).format(outstandingBalance)}",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = BrandPrimary
                     )
                     Text(
                         text = "Total Due",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 10.sp
+                        style = MaterialTheme.typography.labelMedium,
+                        color = GreyText,
+                        fontSize = 12.sp
                     )
                     Icon(
                         imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                         contentDescription = if (isExpanded) "Collapse" else "Expand",
-                        modifier = Modifier.padding(top = 2.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        modifier = Modifier.padding(top = 4.dp),
+                        tint = GreyText
                     )
                 }
             }
@@ -366,16 +391,16 @@ fun CustomerTransactionCard(
                             navController.navigate("customer_detail/${customer.id}")
                         }
                 ) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider(thickness = 0.5.dp)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Divider(thickness = 1.dp, color = BorderColor)
+                    Spacer(modifier = Modifier.height(12.dp))
                     
                     Text(
                         text = "Last 3 Transactions",
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 6.dp)
+                        color = DarkText,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                     
                     transactions.forEachIndexed { index, transaction ->
@@ -419,38 +444,32 @@ fun LedgerEntry(
                 },
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
-                color = if (transaction.type == TransactionType.CREDIT) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
+                color = Color.White,
                 modifier = Modifier
                     .padding(horizontal = 6.dp, vertical = 2.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .then(
-                        androidx.compose.ui.Modifier.background(
-                            if (transaction.type == TransactionType.CREDIT) {
-                                MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
-                            } else {
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                            }
-                        )
+                    .background(
+                        if (transaction.type == TransactionType.CREDIT) {
+                            WarningRed
+                        } else {
+                            SuccessGreen
+                        }
                     )
             )
             
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = dateFormat.format(Date(transaction.date)),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 11.sp
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = GreyText,
+                    fontSize = 13.sp
                 )
                 if (transaction.notes != null) {
                     Text(
                         text = transaction.notes,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 10.sp,
+                        color = GreyText,
+                        fontSize = 12.sp,
                         maxLines = 1,
                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                     )
@@ -460,14 +479,14 @@ fun LedgerEntry(
         
         Text(
             text = "${if (transaction.type == TransactionType.CREDIT) "+" else "-"}₹${NumberFormat.getNumberInstance(Locale.US).format(transaction.amount)}",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = if (transaction.type == TransactionType.CREDIT) {
-                MaterialTheme.colorScheme.error
+                WarningRed
             } else {
-                MaterialTheme.colorScheme.primary
+                SuccessGreen
             },
-            fontSize = 14.sp
+            fontSize = 15.sp
         )
     }
 }

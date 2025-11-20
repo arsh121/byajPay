@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 import androidx.compose.material.icons.filled.Person
+import com.byajpay.app.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +30,8 @@ fun AppTopBar(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                color = androidx.compose.ui.graphics.Color.White
             )
         },
         navigationIcon = {
@@ -38,7 +40,7 @@ fun AppTopBar(
                     Icon(
                         Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = androidx.compose.ui.graphics.Color.White
                     )
                 }
             }
@@ -53,7 +55,7 @@ fun AppTopBar(
                     Icon(
                         Icons.Default.Person,
                         contentDescription = "Profile",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = androidx.compose.ui.graphics.Color.White
                     )
                 }
             }
@@ -68,14 +70,16 @@ fun AppTopBar(
                     Icon(
                         Icons.Default.Home,
                         contentDescription = "Home",
-                        tint = MaterialTheme.colorScheme.onSurface
+                        tint = androidx.compose.ui.graphics.Color.White
                     )
                 }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface
+            containerColor = BrandPrimary,
+            titleContentColor = androidx.compose.ui.graphics.Color.White,
+            navigationIconContentColor = androidx.compose.ui.graphics.Color.White,
+            actionIconContentColor = androidx.compose.ui.graphics.Color.White
         ),
         modifier = modifier
     )

@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,7 @@ import androidx.navigation.NavController
 import com.byajpay.app.data.model.InterestCycle
 import com.byajpay.app.data.model.TransactionType
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.AddTransactionViewModel
 import java.util.Calendar
 
@@ -66,6 +68,10 @@ fun AddTransactionScreen(
                 onValueChange = { amount = it },
                 label = { Text("Amount *") },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                     keyboardType = KeyboardType.Decimal
@@ -100,6 +106,10 @@ fun AddTransactionScreen(
                 onValueChange = { notes = it },
                 label = { Text("Notes (Optional)") },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -126,6 +136,10 @@ fun AddTransactionScreen(
                         onValueChange = { interestRate = it },
                         label = { Text("Interest Rate (%) *") },
                         shape = RoundedCornerShape(16.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = BrandPrimary,
+                            unfocusedBorderColor = BorderColor
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                             keyboardType = KeyboardType.Decimal
@@ -175,15 +189,25 @@ fun AddTransactionScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BrandPrimary
+                ),
                 enabled = amount.toDoubleOrNull() != null &&
                         selectedType != null &&
                         (!chargeInterest || (interestRate.toDoubleOrNull() != null && selectedCycle != null)) &&
                         uiState !is com.byajpay.app.ui.viewmodel.TransactionUiState.Loading
             ) {
                 if (uiState is com.byajpay.app.ui.viewmodel.TransactionUiState.Loading) {
-                    CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = androidx.compose.ui.graphics.Color.White
+                    )
                 } else {
-                    Text("Add Transaction")
+                    Text(
+                        "Add Transaction",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
             

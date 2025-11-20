@@ -6,11 +6,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.AddCustomerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,6 +53,10 @@ fun AddCustomerScreen(
                 onValueChange = { name = it },
                 label = { Text("Name *") },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -60,6 +66,10 @@ fun AddCustomerScreen(
                 onValueChange = { if (it.length <= 10) phone = it },
                 label = { Text("Phone (Optional)") },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -69,6 +79,10 @@ fun AddCustomerScreen(
                 onValueChange = { notes = it },
                 label = { Text("Notes (Optional)") },
                 shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = BrandPrimary,
+                    unfocusedBorderColor = BorderColor
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -85,12 +99,22 @@ fun AddCustomerScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BrandPrimary
+                ),
                 enabled = name.isNotBlank() && uiState !is com.byajpay.app.ui.viewmodel.CustomerUiState.Loading
             ) {
                 if (uiState is com.byajpay.app.ui.viewmodel.CustomerUiState.Loading) {
-                    CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = androidx.compose.ui.graphics.Color.White
+                    )
                 } else {
-                    Text("Add Customer")
+                    Text(
+                        "Add Customer",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
             

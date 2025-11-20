@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,7 @@ import androidx.navigation.NavController
 import com.byajpay.app.data.model.Transaction
 import com.byajpay.app.data.model.TransactionType
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.CustomerDetailViewModel
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -55,7 +57,9 @@ fun CustomerDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("add_transaction/$customerId") }
+                onClick = { navController.navigate("add_transaction/$customerId") },
+                containerColor = BrandPrimary,
+                contentColor = androidx.compose.ui.graphics.Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Transaction")
             }
@@ -71,25 +75,27 @@ fun CustomerDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
-                shape = RoundedCornerShape(24.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = BrandSecondary
                 )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(20.dp)
                 ) {
                     Text(
                         text = currentCustomer?.name ?: "",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = DarkText
                     )
                     currentCustomer?.phone?.let { phone ->
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = phone,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = GreyText
                         )
                     }
                     Spacer(modifier = Modifier.height(16.dp))
@@ -100,13 +106,14 @@ fun CustomerDetailScreen(
                     ) {
                         Text(
                             text = "Outstanding Balance",
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            color = BrandPrimary
                         )
                         Text(
                             text = "₹${NumberFormat.getNumberInstance(Locale.US).format(outstandingBalance)}",
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.headlineLarge,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = BrandPrimary
                         )
                     }
                 }
@@ -117,53 +124,54 @@ fun CustomerDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 8.dp),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = Color.White
                 )
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 12.dp)
                 ) {
                     // Ledger Header
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             text = "Ledger",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
+                            color = DarkText,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
                             text = "Amount",
-                            style = MaterialTheme.typography.labelMedium,
+                            style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = GreyText
                         )
                     }
                     
-                    Divider(thickness = 1.dp)
+                    Divider(thickness = 1.dp, color = BorderColor)
                     
                     // Ledger Entries
                     if (transactions.isEmpty()) {
                         Text(
                             text = "No transactions yet",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(16.dp)
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = GreyText,
+                            modifier = Modifier.padding(20.dp)
                         )
                     } else {
                         transactions.forEachIndexed { index, transaction ->
                             LedgerRow(transaction = transaction)
                             if (index < transactions.size - 1) {
-                                Divider(thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 12.dp))
+                                Divider(thickness = 0.5.dp, color = BorderColor, modifier = Modifier.padding(horizontal = 16.dp))
                             }
                         }
                     }
@@ -180,7 +188,7 @@ fun LedgerRow(transaction: Transaction) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 10.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -189,7 +197,7 @@ fun LedgerRow(transaction: Transaction) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Type indicator
+            // Type indicator - Credit = Red, Debit = Green
             Text(
                 text = if (transaction.isInterestEntry) {
                     "INT"
@@ -198,21 +206,17 @@ fun LedgerRow(transaction: Transaction) {
                 } else {
                     "DR"
                 },
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
-                color = if (transaction.type == TransactionType.CREDIT) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
+                color = Color.White,
                 modifier = Modifier
                     .padding(horizontal = 6.dp, vertical = 2.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .background(
                         if (transaction.type == TransactionType.CREDIT) {
-                            MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                            WarningRed
                         } else {
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                            SuccessGreen
                         }
                     )
             )
@@ -220,16 +224,16 @@ fun LedgerRow(transaction: Transaction) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = dateFormat.format(Date(transaction.date)),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 12.sp
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = DarkText,
+                    fontSize = 14.sp
                 )
                 if (transaction.notes != null) {
                     Text(
                         text = transaction.notes,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 11.sp,
+                        color = GreyText,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -239,14 +243,14 @@ fun LedgerRow(transaction: Transaction) {
         
         Text(
             text = "${if (transaction.type == TransactionType.CREDIT) "+" else "-"}₹${NumberFormat.getNumberInstance(Locale.US).format(transaction.amount)}",
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = if (transaction.type == TransactionType.CREDIT) {
-                MaterialTheme.colorScheme.error
+                WarningRed
             } else {
-                MaterialTheme.colorScheme.primary
+                SuccessGreen
             },
-            fontSize = 14.sp
+            fontSize = 15.sp
         )
     }
 }

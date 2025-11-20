@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.byajpay.app.ui.components.AppTopBar
+import com.byajpay.app.ui.theme.*
 import com.byajpay.app.ui.viewmodel.ProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,15 +41,20 @@ fun ProfileScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = LightGrey
+                )
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "User Information",
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = DarkText
                     )
                     // TODO: Display user name, phone, business name
                 }
@@ -68,12 +74,16 @@ fun ProfileScreen(
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error
+                    containerColor = WarningRed
                 )
             ) {
                 Icon(Icons.Default.Logout, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Logout")
+                Text(
+                    "Logout",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
+                )
             }
         }
     }
